@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba WebSocket</title>
+    <script language="javascript" type="text/javascript">
+
+    var wsUri = 'ws://localhost:8080';
+    var output;     
+
+    function init() { 
+        output = document.getElementById("output"); 
+        testWebSocket(); 
+    }
+
+    function testWebSocket() { 
+
+        websocket = new WebSocket(wsUri); 
+        websocket.onopen = onOpen; 
+        websocket.onclose = onClose; 
+        websocket.onmessage = onMessage; 
+        websocket.onerror = onError;
+    }
+
+    function onOpen(evt) { 
+        writeToScreen("Conectado"); 
+        doSend("websocket functiona!"); 
+    }
+
+    function onClose(evt) { 
+        writeToScreen("Desconectado"); 
+    }
+
+    function onMessage(evt) { 
+        writeToScreen('<span style="color : blue;">Respuesta: ' + evt.data + '</span>')
+        websocket.close()
+    }
+
+    function onError(evt) { 
+        writeToScreen('<span style="color : red;">Error: ' + evt.data + '</span>')
+    }
+
+    function doSend(message) { 
+        writeToScreen('Enviado: ' + message); 
+        websocket.send(message); 
+    }
+
+    function writeToScreen(message) { 
+        var pre = document.createElement("p"); 
+        pre.style.wordWrap = "break-word";
+        pre.innerHTML = message; 
+        output.appendChild(pre);
+    }
+    
+
+    window.addEventListener("load",init,false)
+
+    </script>
+</head>
+<body>
+    
+    <h2>Prueba de WebSocket</h2>
+
+    <div id="output">
+
+    </div>
+</body>
+</html>
